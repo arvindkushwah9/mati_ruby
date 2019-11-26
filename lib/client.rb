@@ -28,17 +28,26 @@ class Client
     #params = {"metadata":{"user":"JOHN MALCOVICH","id":"8ad234f293ed89a89d88e12ab"}}
      require 'net/http'
     require 'net/https'
-    uri = URI.parse("https://api.getmati.com//v2/identities")
+    uri = URI.parse("https://api.getmati.com/v2/identities")
     http = Net::HTTP.new(uri.host, uri.port)
     http.use_ssl = true
-    request = Net::HTTP::Post.new(uri.request_uri)
-    request.set_form_data({"metadata":{"user":"JOHN MALCOVICH","id":"8ad234f293ed89a89d88e12ab"}})
-    request.initialize_http_header({"Authorization" => "Bearer " + header_string.squish, "Content-Type" => "application/json"})
+    request = Net::HTTP::Post.new(uri.path, {"Authorization" => "Bearer #{params[:identity][:token]}",'Content-Type' => 'application/json'})
+
+    user = params[:identity][:user_name]
+    id = params[:identity][:id]
+    # request.set_form_data({"metadata":{"user":"#{user}","id": "#{id}"}})
+
+
+    request.body = {"metadata":{"user":"#{user}","id": "#{id}"}}.to_json
+
     response = http.request(request)
     unless response.is_a?(Net::HTTPSuccess)
       puts 'We currently do not offer account linking with that'
+      json = {message: "Invalide Token"}
+    else
+      json = ActiveSupport::JSON.decode(response.body)
+
     end
-    json = ActiveSupport::JSON.decode(response.body)
   end
 
 

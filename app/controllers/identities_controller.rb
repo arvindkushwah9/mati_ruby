@@ -27,7 +27,8 @@ class IdentitiesController < ApplicationController
   def create
     @identity = Identity.new(identity_params)
     @response = Client.new.create_identity(params)
-
+    # session['mati_auth'] =  @response
+    # render json: @response
 
     respond_to do |format|
       if @identity.save
@@ -72,6 +73,6 @@ class IdentitiesController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def identity_params
-      params.require(:identity).permit(:user, :id)
+      params.require(:identity).permit(:user_name, :id)
     end
 end
