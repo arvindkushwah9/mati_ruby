@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>GetmatiRuby</title>
+    <%= csrf_meta_tags %>
+    <%= csp_meta_tag %>
+
+    <%= stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track': 'reload' %>
+    <%= javascript_include_tag 'application', 'data-turbolinks-track': 'reload' %>
+  </head>
+
+  <body>
+    <%= link_to 'Home', '/' %>
+    <%= link_to 'Get Token', get_token_path, target:"_blank" %>
+    <%= link_to 'New Identity', new_identity_path %>
+
+    <%= yield %>
+  </body>
+</html>
