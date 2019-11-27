@@ -29,7 +29,7 @@ class IdentitiesController < ApplicationController
     @response = Client.new.create_identity(params)
     session['mati_auth'] =  @response
     render json: @response
-
+    @identity.save
     # respond_to do |format|
     #   if @identity.save
     #     format.html { redirect_to @identity, notice: 'Identity was successfully created.' }
