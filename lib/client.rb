@@ -34,7 +34,7 @@ class Client
     request = Net::HTTP::Post.new(uri.path, {"Authorization" => "Bearer #{params[:identity][:token]}",'Content-Type' => 'application/json'})
 
     user = params[:identity][:user_name]
-    id = params[:identity][:id]
+    id = params[:identity][:user_id]
     # request.set_form_data({"metadata":{"user":"#{user}","id": "#{id}"}})
 
 

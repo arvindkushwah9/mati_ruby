@@ -23,7 +23,7 @@
 
   <div class="field">
     <%= form.label :id %>
-    <%= form.text_field :id, value: session['mati_auth']['payload']['user']['_id'] %>
+    <%= form.text_field :user_id, value: session['mati_auth']['payload']['user']['_id'] %>
   </div>
 
   <div class="actions">

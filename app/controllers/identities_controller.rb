@@ -27,18 +27,18 @@ class IdentitiesController < ApplicationController
   def create
     @identity = Identity.new(identity_params)
     @response = Client.new.create_identity(params)
-    # session['mati_auth'] =  @response
-    # render json: @response
+    session['mati_auth'] =  @response
+    render json: @response
 
-    respond_to do |format|
-      if @identity.save
-        format.html { redirect_to @identity, notice: 'Identity was successfully created.' }
-        format.json { render :show, status: :created, location: @identity }
-      else
-        format.html { render :new }
-        format.json { render json: @identity.errors, status: :unprocessable_entity }
-      end
-    end
+    # respond_to do |format|
+    #   if @identity.save
+    #     format.html { redirect_to @identity, notice: 'Identity was successfully created.' }
+    #     format.json { render :show, status: :created, location: @identity }
+    #   else
+    #     format.html { render :new }
+    #     format.json { render json: @identity.errors, status: :unprocessable_entity }
+    #   end
+    # end
   end
 
   # PATCH/PUT /identities/1
@@ -73,6 +73,6 @@ class IdentitiesController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def identity_params
-      params.require(:identity).permit(:user_name, :id)
+      params.require(:identity).permit(:user_name, :user_id)
     end
 end
