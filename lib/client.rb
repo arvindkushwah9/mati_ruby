@@ -50,6 +50,17 @@ class Client
     end
   end
 
+  def send_input(identity)
+    require 'net/http'
+    require 'net/https'
+    uri = URI.parse("https://api.getmati.com/v2/identities/#{identity.user_id}/send-input")
+    http = Net::HTTP.new(uri.host, uri.port)
+    http.use_ssl = true
+    request = Net::HTTP::Post.new(uri.path, {"Authorization" => "Beare #{session['mati_auth']['access_token']}",'Content-Type' => 'application/json'})
+    
+    
+  end
+
 
 
   private

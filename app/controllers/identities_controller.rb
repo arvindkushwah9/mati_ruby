@@ -11,6 +11,9 @@ class IdentitiesController < ApplicationController
   # GET /identities/1
   # GET /identities/1.json
   def show
+    @response = Client.new.send_input(@identity)
+    session['mati_auth'] =  @response
+    render json: @response
   end
 
   # GET /identities/new
