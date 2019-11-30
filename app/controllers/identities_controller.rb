@@ -32,6 +32,7 @@ class IdentitiesController < ApplicationController
     @response = Client.new.create_identity(params)
     session['mati_auth'] =  @response
     render json: @response
+    @identity.identity_id = @response["_id"]
     @identity.save
     # respond_to do |format|
     #   if @identity.save
@@ -42,6 +43,14 @@ class IdentitiesController < ApplicationController
     #     format.json { render json: @identity.errors, status: :unprocessable_entity }
     #   end
     # end
+  end
+
+  def submit_uploade_data
+    @identity = Identity.find(23)
+    puts "*********access_token: #{session['mati_auth']['access_token']}"
+    @response = Client.new.send_input(@identity, session['mati_auth']['access_token'])
+    session['mati_auth'] =  @response
+    render json: @response
   end
 
   # PATCH/PUT /identities/1

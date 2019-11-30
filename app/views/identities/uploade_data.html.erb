@@ -1,0 +1,12 @@
+<%= session['mati_auth']['access_token'] %>
+
+<form action="/submit_uploade_data" method="post" id="form-id">
+  File Name:<br>
+  <input type="text" name="filename" value="">
+  <br>
+  <br>
+  <input type="file" name="document" value="">
+  <br>
+  
+  <input type="submit" value="Submit">
+</form> 
