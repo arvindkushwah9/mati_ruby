@@ -1,76 +1,96 @@
 <%= session['mati_auth']['access_token'] %>
 
-<form action="/submit_uploade_data" method="post" id="form-id">
+<%= form_tag "/submit_uploade_data", multipart: true do |f| %>
   <b>Choose Type</b>:<br>
   <input type="radio" id="postageyes" name="input_type" value="document-photo" /> Document-photo
   <input type="radio" id="postageno" name="input_type" value="selfie-photo" /> Selfie-photo
-  <input type="radio" id="postageno" name="input_type" value="selfie-video" /> Selfie-video
+  <input type="radio" id="postageno-v" name="input_type" value="selfie-video" /> Selfie-video
   <br>
   <br>
   <br>
   <div id="document_photo">
     <input type="hidden" name="group" value="0">
+    <input type="hidden" name="identity_id" value="<%= @identity.id %>">
     Type:
-    <select name="type">
+    <select name="type" id="document_type">
       <option></option>
       <option value="national_id">National id</option>
       <option value="driving_license">Driving License</option>
       <option value="passport">Passport</option>
       <option value="proof_of_residency">Proof of residency</option>
     </select>
+    <br>
     Country: 
-    <select name="country">
-      <option>Select</option>
+    <select name="country" id="document_country">
+      <option></option>
       <% for country in @country %>
         <option value="<%= country%>"><%= country %></option>
       <% end %>
-    </select>
+    </select><br>
     State: 
-    <select name="state">
-      <option>Select</option>
+    <select name="state" id="document_state">
+      <option></option>
       <% for state in @regoin %>
         <option value="<%= state %>"><%= state %></option>
       <% end %>
-    </select>
-    Page: 
-    <select name="page">
-      <option>Select</option>
-      <option value="front">Front</option>
-      <option value="back">Back</option>
-    </select>
+    </select><br>
     <%#= select_tag "country[]", options_for_select(@country.collect{|x| [x,x]}), {:multiple => :multiple, :size => 10} %>
 
-    File: <input type="file" name="filename">
+    Front Photo: <input type="file" name="fron_file" id="document_fron_file">
+    <br>
+    <div id="back_photo_file" style="display: none;">
+      Back Photo: <input type="file" name="back_file" id="document_back_file">
+      <br>
+    </div>
     <br>
     <input type="submit" value="Submit">
   </div>
   <div id="selfi_photo">
-    Photo: <input type="file" name="photo">
+    Photo: <input type="file" name="photo" id="document_selfi_photo">
     <input type="submit" value="Submit">
   </div>
   <div id="selfi_video">
-    Video: <input type="file" name="video">
+    Video: <input type="file" name="video" id="document_selfi_video">
     <input type="submit" value="Submit">
   </div>
   
-</form> 
+<% end %>
 <script type="text/javascript">
   $(document).ready(function(){
     $('input:radio[name="input_type"]').change(function(){
+      $("input").removeAttr("required");
+      $("select").removeAttr("required");
       if($(this).val() == 'document-photo'){
         $('#document_photo').show();
         $('#selfi_photo').hide();
         $('#selfi_video').hide();
+        $("#document_type").attr("required", "true");
+        $("#document_country").attr("required", "true");
+        $("#document_state").attr("required", "true");
+        $("#document_fron_file").attr("required", "true");
       }
       else if ($(this).val() == 'selfie-photo'){
         $('#document_photo').hide();
         $('#selfi_photo').show();
         $('#selfi_video').hide();
+        $("#document_selfi_photo").attr("required", "true");
       }
       else if ($(this).val() == 'selfie-video'){
         $('#document_photo').hide();
         $('#selfi_photo').hide();
         $('#selfi_video').show();
+        $("#document_selfi_video").attr("required", "true");
+      }
+    });
+    $('#document_type').change(function(){
+      var document_type = $(this).val();
+      if((document_type == 'driving_license') || (document_type == 'passport')){
+        $('#back_photo_file').show();
+        $("#document_back_file").attr("required", "true");
+      }
+      else{
+        $('#back_photo_file').hide();
+        $("#document_back_file").removeAttr("required");
       }
     });
   });

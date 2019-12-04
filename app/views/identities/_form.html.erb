@@ -12,19 +12,21 @@
   <% end %>
 <% if session['mati_auth'] %>
 <div class="field">
-    <%= form.label :token %>
-    <%= form.text_field :token, value:  session['mati_auth']['access_token'] %>
+    <%= form.label :access_token %>
+    <%= form.text_area :token, value:  session['mati_access_token'], rows: 5, readonly: true %>
+  </div>
+
+  <div class="field">
+    <%= form.label :user_id %>
+    <%= form.text_field :user_id, value: session['mati_auth']['payload']['user']['_id'], readonly: true %>
   </div>
 
   <div class="field">
     <%= form.label :user_name %>
-    <%= form.text_field :user_name %>
+    <%= form.text_field :user_name, :required => true %>
   </div>
 
-  <div class="field">
-    <%= form.label :id %>
-    <%= form.text_field :user_id, value: session['mati_auth']['payload']['user']['_id'] %>
-  </div>
+  
 
   <div class="actions">
     <%= form.submit %>

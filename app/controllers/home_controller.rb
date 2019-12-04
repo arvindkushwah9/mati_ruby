@@ -7,6 +7,8 @@ class HomeController < ApplicationController
   def get_token
     @response = Client.new.get_auth
     session['mati_auth'] =  @response
-    render json: @response
+    session['mati_access_token'] =  @response["access_token"]
+
+    # render json: @response
   end
 end

@@ -65,3 +65,4 @@ gem 'figaro'
 gem 'wdm', '>= 0.1.0' if Gem.win_platform?
 gem 'curb'
 gem 'country_state_select'
+gem 'rest-client'

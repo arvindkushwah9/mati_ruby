@@ -50,65 +50,30 @@ class Client
     end
   end
 
-  def send_input(identity, access_token)
-    require 'net/http'
-    require 'net/https'
-    uri = URI.parse("https://api.getmati.com/v2/identities/#{identity.identity_id}/send-input")
-    http = Net::HTTP.new(uri.host, uri.port)
-    http.use_ssl = true
-    # request = Net::HTTP::Post.new(uri.path, {"Authorization" => "Bearer #{access_token}"})
-
-    request = Net::HTTP::Post.new(uri.request_uri)
-
-
-    file = "/home/bittern-i5-3/Desktop/bluebells_lin.jpg"
-
-    # request.set_form_data('inputs' => [{"inputType":"document-photo","group":0,"data":{"type":"national-id","country":"US","region":"IL","page":"front","filename":"bluebells_lin.jpg"}}])
-
-    request.set_form_data('inputs' => [{"inputType": "document-photo","group": 0,"data": {"type": "national-id","country": "US","region": "IL","page": "front","filename": "bluebells_lin.jpg"}}])
-
-    # request.set_form_data('document' => File.read(file))
-
-    request.initialize_http_header({"Authorization" => "Bearer " + access_token})
-
-    response = http.request(request)
-
-    response.body
-
-    # params = {"inputType":"document-photo","group":0,"data":{"type":"national-id","country":"US","region":"IL","page":"front","filename":"USA-NI-FRONT.jpg"}}
-
-
-
-    # request.body = {inputs: {"inputType":"document-photo","group":0,"data":{"type":"national-id","country":"US","region":"IL","page":"front","filename":"USA-NI-FRONT.jpg"}}}.to_json
+  def send_input(params, identity, access_token)
+    require 'rest-client'
     
-    # response = http.request(request)
 
-    # req_options = {
-    #   use_ssl: uri.scheme == "https",
-    #   inputs: [{"inputType":"document-photo","group":0,"data":{"type":"national-id","country":"US","region":"IL","page":"front","filename":"bluebells_lin.jpg"}}]
-    # }
-    # response = Net::HTTP.start(uri.hostname, uri.port, req_options) do |http|
-    #   http.request(request)
-    # end
-
-    curl_response = `curl -X POST https://api.getmati.com/v2/identities/#{identity.identity_id}/send-input -H 'Authorization: Bearer #{access_token}' -F 'inputs=[{"inputType":"document-photo","group":0,"data":{"type":"national-id","country":"US","region":"IL","page":"front","filename":"bluebells_lin.jpg"}}]' -F document=#{File.read(file)}`
-
-
-    unless response.is_a?(Net::HTTPSuccess)
-      puts 'We currently do not offer account linking with that'
+    if params[:input_type] == "document-photo"
+      if params[:type].present? && (params[:type] == "driving_license" || params[:type] == "passport")
+        path = params[:fron_file].path
+        path2 = params[:back_file].path
+        response = RestClient.post("https://api.getmati.com/v2/identities/#{identity.identity_id}/send-input", {:inputs => [{"inputType": "document-photo","group": 0,"data": {"type": "national-id","country": params[:country],"region": params[:state],"page": "front","filename": File.basename(path)}}].to_json, :document => File.new(path, 'rb')}, headers={"Authorization": "Bearer #{access_token}"})
+        response2 = RestClient.post("https://api.getmati.com/v2/identities/#{identity.identity_id}/send-input", {:inputs => [{"inputType": "document-photo","group": 0,"data": {"type": "national-id","country": params[:country],"region": params[:state],"page": "back","filename": File.basename(path2)}}].to_json, :document => File.new(path2, 'rb')}, headers={"Authorization": "Bearer #{access_token}"})
+      else
+        path = params[:fron_file].path
+        response = RestClient.post("https://api.getmati.com/v2/identities/#{identity.identity_id}/send-input", {:inputs => [{"inputType": "document-photo","group": 0,"data": {"type": "national-id","country": params[:country],"region": params[:state],"page": "front","filename": File.basename(path)}}].to_json, :document => File.new(path, 'rb')}, headers={"Authorization": "Bearer #{access_token}"})
+      end
+    elsif params[:input_type] == "selfie-photo"
+      path = params[:photo].path
+      response = RestClient.post("https://api.getmati.com/v2/identities/#{identity.identity_id}/send-input", {:inputs => [{"inputType": "selfie-photo","data": {"filename": File.basename(path)}}].to_json, :document => File.new(path, 'rb')}, headers={"Authorization": "Bearer #{access_token}"})
+    elsif params[:input_type] == "selfie-video"
+      path = params[:video].path
+      response = RestClient.post("https://api.getmati.com/v2/identities/#{identity.identity_id}/send-input", {:inputs => [{"inputType": "selfie-video","data": {"filename": File.basename(path)}}].to_json, :document => File.new(path, 'rb')}, headers={"Authorization": "Bearer #{access_token}"})
     end
-    json = ActiveSupport::JSON.decode(response.body)
 
+    response
 
-    puts "response: #{json}"
-
-    # unless response.is_a?(Net::HTTPSuccess)
-    #   puts 'We currently do not offer account linking with that'
-    #   json = {message: "Invalide Token"}
-    # else
-    #   json = ActiveSupport::JSON.decode(response.body)
-
-    # end
   end
 
 
