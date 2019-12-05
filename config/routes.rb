@@ -3,6 +3,9 @@ Rails.application.routes.draw do
   	member do
   		get :uploade_data
   	end
+    collection do
+      get :country_select
+    end
   end
   root 'home#index'
   get 'get_token' => 'home#get_token', as: :get_token

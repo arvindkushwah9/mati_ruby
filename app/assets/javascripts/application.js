@@ -15,6 +15,6 @@
 //= require rails-ujs
 //= require activestorage
 //= require turbolinks
-//= require country_state_select
+//= require popper
+//= require bootstrap-sprockets
 
-//= require_tree .

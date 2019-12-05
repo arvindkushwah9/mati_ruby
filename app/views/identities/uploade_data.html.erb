@@ -21,20 +21,12 @@
     </select>
     <br>
     Country: 
-    <select name="country" id="document_country">
-      <option></option>
-      <% for country in @country %>
-        <option value="<%= country%>"><%= country %></option>
-      <% end %>
-    </select><br>
+    <%= select_tag('country', options_from_collection_for_select(CS.countries, :first, :last), {id: "documents_country_id"}) %>
+    <br>
     State: 
-    <select name="state" id="document_state">
-      <option></option>
-      <% for state in @regoin %>
-        <option value="<%= state %>"><%= state %></option>
-      <% end %>
-    </select><br>
-    <%#= select_tag "country[]", options_for_select(@country.collect{|x| [x,x]}), {:multiple => :multiple, :size => 10} %>
+    <div class="state-select-box">
+      <%= select_tag('state', options_for_select([]), id: "document_state") %>
+    </div><br>
 
     Front Photo: <input type="file" name="fron_file" id="document_fron_file">
     <br>
@@ -92,6 +84,14 @@
         $('#back_photo_file').hide();
         $("#document_back_file").removeAttr("required");
       }
+    });
+    $('#documents_country_id').change(function(){
+    var value = this.value ;
+      $.ajax({
+        url: "/identities/country_select",
+        type: "GET",
+        data: {country_code: value },
+      })
     });
   });
 </script>

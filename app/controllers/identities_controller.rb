@@ -47,8 +47,13 @@ class IdentitiesController < ApplicationController
 
   def uploade_data
     @identity = Identity.find(params[:id])
-    @country = ["AD","AE","AF","AG","AI","AL","AM","AO","AR","AT","AU","AW","AZ","BA","BB","BD","BE","BF","BG","BH","BI","BJ","BM","BN","BO","BR","BS","BT","BW","BZ","CA","CD","CF","CG","CH","CI","CL","CM","CN","CO","CR","CW","CY","CZ","DE","DJ","DK","DM","DO","DZ","EC","EE","EG","ER","ES","ET","FI","FJ","FR","GA","GB","GD","GE","GH","GM","GN","GQ","GR","GT","GW","GY","HK","HN","HR","HT","HU","ID","IE","IL","IN","IS","IT","JM","JO","JP","KE","KG","KH","KI","KM","KN","KR","KV","KW","KZ","LA","LB","LC","LI","LK","LS","LT","LU","LV","LY","MA","MC","MD","ME","MG","MK","ML","MM","MN","MT","MU","MV","MW","MX","MY","MZ","NA","NE","NG","NI","NL","NO","NP","NR","NU","NZ","OM","PA","PE","PG","PH","PK","PL","PS","PT","PY","QA","RO","RS","RU","RW","SA","SB","SC","SE","SG","SI","SK","SL","SM","SN","SO","SR","SS","ST","SV","SZ","TD","TG","TH","TJ","TL","TM","TN","TO","TP","TR","TT","TV","TZ","UA","UG","US","UY","UZ","VA","VE","VN","VU","WS","YE","ZA","ZM"]
-    @regoin = ["AL","AK","AZ","AR","CA","CO","CT","DE","DC","FL","GA","HI","ID","IL","IN","IA","KS","KY","LA","ME","MD","MA","MI","MN","MS","MO","MT","NE","NV","NJ","NM","NY","NC","NH","ND","OH","OK","OR","PA","RI","SC","SD","TN","TX","UT","VT","VA","WA","WV","WI","WY"]
+  end
+
+  def country_select
+    @states = CS.states(params[:country_code])
+    respond_to do |format|
+      format.js {  }
+    end
   end
 
   def submit_uploade_data
