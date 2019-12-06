@@ -1,5 +1,10 @@
-Access Token: <%= session['mati_access_token'] %>
-<br>
-<br>
-<br>
-<%= link_to 'New Identity', new_identity_path %>
+<% if session['mati_access_token'] %>
+	Access Token: <%= session['mati_access_token'] %>
+	<br>
+	<br>
+	<br>
+	<%= link_to 'New Identity', new_identity_path %>
+<% else %>
+	Please enter correct <b>client id and Secret id</b>.
+<% end %>
+

@@ -5,16 +5,16 @@ class Client
     mati_conn.test_call(test_call_message)
   end
 
-  def get_auth
-     require 'net/http'
+  def get_auth(params)
+    require 'net/http'
     require 'net/https'
     uri = URI.parse("https://api.getmati.com/oauth")
     http = Net::HTTP.new(uri.host, uri.port)
     http.use_ssl = true
     request = Net::HTTP::Post.new(uri.request_uri)
-    client_id = ENV['CLIENT_ID']
-    client_secret =  ENV['CLIENT_SECRET']
-    header_string =  Base64.encode64(("#{client_id}:#{client_secret}")).squish.gsub(" ", "")
+    client_id = params[:client_id]
+    client_secret = params[:client_secret]
+    header_string = Base64.encode64(("#{client_id}:#{client_secret}")).squish.gsub(" ", "")
     request.set_form_data('grant_type' => 'client_credentials')
     request.initialize_http_header({"Authorization" => "Basic " + header_string.squish, "Content-Type" => "application/x-www-form-urlencoded"})
     response = http.request(request)

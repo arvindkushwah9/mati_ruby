@@ -8,7 +8,7 @@ Rails.application.routes.draw do
     end
   end
   root 'home#index'
-  get 'get_token' => 'home#get_token', as: :get_token
+  post 'get_token' => 'home#get_token', as: :get_token
   
   post 'submit_uploade_data' => 'identities#submit_uploade_data', as: :submit_uploade_data
   # For details on the DSL available within this file, see http://guides.rubyonrails.org/routing.html

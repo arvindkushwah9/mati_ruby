@@ -1,1 +1,9 @@
-<%= link_to 'Get Token', get_token_path %>
+<%= form_tag get_token_path %>
+	<label>Clien id</label>
+  <input type="text" name="client_id" required><br>
+  <label>Client Secret</label>
+  <input type="text" name="client_secret" required>
+  <br><br>
+  <input type="submit" value="Get Token">
+</end>
+<%#= link_to 'Get Token', get_token_path %>
