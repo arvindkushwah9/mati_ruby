@@ -76,7 +76,7 @@
     });
     $('#document_type').change(function(){
       var document_type = $(this).val();
-      if((document_type == 'driving_license') || (document_type == 'passport')){
+      if((document_type == 'driving_license') || (document_type == 'national_id')){
         $('#back_photo_file').show();
         $("#document_back_file").attr("required", "true");
       }
