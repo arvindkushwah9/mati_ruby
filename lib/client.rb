@@ -55,7 +55,7 @@ class Client
     
 
     if params[:input_type] == "document-photo"
-      if params[:type].present? && (params[:type] == "driving_license" || params[:type] == "passport")
+      if params[:type].present? && (params[:type] == "driving_license" || params[:type] == "national_id")
         path = params[:fron_file].path
         path2 = params[:back_file].path
         response = RestClient.post("https://api.getmati.com/v2/identities/#{identity.identity_id}/send-input", {:inputs => [{"inputType": "document-photo","group": 0,"data": {"type": "national-id","country": params[:country],"region": params[:state],"page": "front","filename": File.basename(path)}}].to_json, :document => File.new(path, 'rb')}, headers={"Authorization": "Bearer #{access_token}"})
