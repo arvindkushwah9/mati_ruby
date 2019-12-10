@@ -23,9 +23,9 @@
     Country: 
     <%= select_tag('country', options_from_collection_for_select(CS.countries, :first, :last), {id: "documents_country_id"}) %>
     <br>
+    <div class="state-select-box" style="display: none;">
     State: 
-    <div class="state-select-box">
-      <%= select_tag('state', options_for_select([]), id: "document_state") %>
+      <%= select_tag('state', options_for_select([""]), id: "document_state") %>
     </div><br>
 
     Front Photo: <input type="file" name="fron_file" id="document_fron_file">
@@ -58,7 +58,7 @@
         $('#selfi_video').hide();
         $("#document_type").attr("required", "true");
         $("#document_country").attr("required", "true");
-        $("#document_state").attr("required", "true");
+        // $("#document_state").attr("required", "true");
         $("#document_fron_file").attr("required", "true");
       }
       else if ($(this).val() == 'selfie-photo'){
@@ -86,12 +86,19 @@
       }
     });
     $('#documents_country_id').change(function(){
-    var value = this.value ;
+      var value = this.value;
       $.ajax({
         url: "/identities/country_select",
         type: "GET",
         data: {country_code: value },
       })
+    
+      if (this.value == "US") {
+        $('.state-select-box').show();
+      }
+      else{
+        $('.state-select-box').hide();
+      } 
     });
   });
 </script>

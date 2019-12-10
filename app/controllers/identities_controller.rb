@@ -50,7 +50,11 @@ class IdentitiesController < ApplicationController
   end
 
   def country_select
-    @states = CS.states(params[:country_code])
+    if params[:country_code] == "US"
+      @states = CS.states(params[:country_code])
+    else
+      @states = {}
+    end
     respond_to do |format|
       format.js {  }
     end

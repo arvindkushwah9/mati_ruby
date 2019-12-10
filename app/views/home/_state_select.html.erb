@@ -1,1 +1,7 @@
-<%= select_tag "state", options_from_collection_for_select(@states, :first, :last) %>
+<br>
+State:
+<% if  @states.present? %>
+	<%= select_tag "state", options_from_collection_for_select(@states, :first, :last), {id: "documents_state"} %>
+<% else %>
+	<%= select_tag('state', options_for_select([""]), id: "document_state") %>
+<% end %>
